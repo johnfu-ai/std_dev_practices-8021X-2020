@@ -52,7 +52,7 @@ templates, and traceability tooling — is derived from and inspired by the
 > GitHub Issues traceability.  
 > → https://github.com/zarfld/IEEE_1588_2019
 
-The `IEEE_DEV_TDD_TEMPLATE` framework from that project has been adapted here
+The framework from that project has been adapted here
 for the IEEE 802.1X-2020 / wpa_supplicant extension context. Key adaptations:
 
 - Build system changed from CMake (new library) to wpa_supplicant Makefile (extension)
