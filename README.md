@@ -134,10 +134,10 @@ wpa_supplicant-8021X-2020/               ← IMPLEMENTATION REPO (separate)
 
 ## Development Methodology
 
-This project applies the **IEEE_DEV_TDD_TEMPLATE** 7-pillar methodology:
+This project applies the 7-pillar methodology:
 
 | Pillar | Key Practices |
-|---|---|lib
+|---|---|
 | **IEEE/ISO/IEC Lifecycle** | 9 phases (12207, 29148, 42010, 1016, 1012) |
 | **Extreme Programming (XP)** | TDD, continuous integration, simple design, YAGNI |
 | **Test-Driven Development** | Red → Green → Refactor; no code without a failing test |
