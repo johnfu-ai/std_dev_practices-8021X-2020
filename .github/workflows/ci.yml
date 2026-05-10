@@ -1,0 +1,133 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install deps
+        run: sudo apt-get update && sudo apt-get install -y cmake g++ gcovr python3-yaml
+
+      - name: Configure (coverage flags)
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_C_FLAGS="--coverage -O0" \
+            -DCMAKE_CXX_FLAGS="--coverage -O0" \
+            -DCMAKE_EXE_LINKER_FLAGS="--coverage" \
+            -DBUILD_TESTING=ON
+
+      - name: Build
+        run: cmake --build build --config Debug -- -j$(nproc)
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure -j$(nproc)
+      - name: Run integration tests (labeled)
+        run: ctest --test-dir build -L integration --output-on-failure -j$(nproc)
+
+      - name: Run reliability tests (labeled)
+        run: ctest --test-dir build -L reliability --output-on-failure -j$(nproc) || exit 1
+
+      - name: Upload reliability failures CSV (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reliability-srg-data
+          path: build/reliability/srg_failures.csv
+          if-no-files-found: ignore
+
+      - name: Upload reliability coverage CSV (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reliability-coverage-data
+          path: build/reliability/state_transition_coverage.csv
+          if-no-files-found: ignore
+
+      - name: Upload reliability history CSV (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reliability-history
+          path: build/reliability/reliability_history.csv
+          if-no-files-found: ignore
+
+      - name: Coverage (gcovr JSON summary)
+        run: gcovr -r . build --json-summary -o coverage.json
+
+      - name: Download quality gates
+        run: cat quality-gates.yml
+
+      - name: Check gates (coverage)
+        run: |
+          python3 scripts/ci/check_quality_gates.py --coverage coverage.json --gates quality-gates.yml
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-json
+          path: coverage.json
+
+  build-test-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure (MSVC Release)
+        shell: pwsh
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        shell: pwsh
+        run: cmake --build build --config Release -- /m
+
+      - name: Run tests
+        shell: pwsh
+        run: ctest --test-dir build -C Release --output-on-failure --parallel 2
+      - name: Run integration tests (labeled)
+        shell: pwsh
+        run: ctest --test-dir build -C Release -L integration --output-on-failure --parallel 2
+
+      - name: Run reliability tests (labeled)
+        shell: pwsh
+        run: ctest --test-dir build -C Release -L reliability --output-on-failure --parallel 2
+
+      - name: Upload reliability failures CSV (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reliability-srg-data-windows
+          path: build/reliability/srg_failures.csv
+          if-no-files-found: ignore
+
+      - name: Upload reliability coverage CSV (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reliability-coverage-data-windows
+          path: build/reliability/state_transition_coverage.csv
+          if-no-files-found: ignore
+
+      - name: Upload reliability history CSV (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reliability-history-windows
+          path: build/reliability/reliability_history.csv
+          if-no-files-found: ignore
+
+  quality-summary:
+    runs-on: ubuntu-latest
+    needs: [build-test-ubuntu, build-test-windows]
+    steps:
+      - name: Report summary
+        run: echo "All platforms built & tests passed; coverage gate enforced from quality-gates.yml."

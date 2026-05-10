@@ -1,0 +1,37 @@
+# Doxyfile for wpa_supplicant-8021X-2020
+# IEEE 802.1X-2020 - Hardware-agnostic protocol implementation
+
+PROJECT_NAME           = "wpa_supplicant-8021X-2020"
+PROJECT_NUMBER         = "0.1.0"
+PROJECT_BRIEF          = "Hardware-agnostic 802.1X-2020 implementation"
+OUTPUT_DIRECTORY       = docs/doxygen
+CREATE_SUBDIRS         = NO
+
+# Input
+INPUT                  = include src lib/Standards
+RECURSIVE              = YES
+FILE_PATTERNS          = *.h *.hpp *.c *.cpp
+EXCLUDE_PATTERNS       = */build/* */external/* */tests/*
+
+# Output formats
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+
+# Extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+
+# Source browsing
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+
+# Graphs
+HAVE_DOT               = NO
+CLASS_DIAGRAMS         = YES
+COLLABORATION_GRAPH    = NO
+
+# Warnings
+WARN_IF_UNDOCUMENTED   = YES
+WARN_NO_PARAMDOC       = YES

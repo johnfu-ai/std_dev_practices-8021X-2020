@@ -1,0 +1,50 @@
+# Build artifacts
+build/
+cmake-build-*/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.lib
+*.exe
+
+# IDE files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Coverage
+coverage*/
+*.gcda
+*.gcno
+*.gcov
+lcov.info
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+dist/
+
+# Node
+node_modules/
+
+# External / vendored builds
+external/*/build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Doxygen output
+docs/doxygen/
+html/
+latex/
+
+# Temporary files
+*.tmp
+*.bak
