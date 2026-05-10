@@ -134,7 +134,8 @@ wpa_supplicant-8021X-2020/               ← IMPLEMENTATION REPO (separate)
 
 ## Development Methodology
 
-This project applies the 7-pillar methodology:
+This project applies 7-pillar methodology:
+This project applies 7-pillar methodology:
 
 | Pillar | Key Practices |
 |---|---|
