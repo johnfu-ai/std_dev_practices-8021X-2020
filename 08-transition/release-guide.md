@@ -83,8 +83,8 @@ Wave 1 supports a single static NID configured at startup. Dynamic NID discovery
 - Single NID only (multi-NID group management is Wave 3)
 - Static NID configuration only (ANCP dynamic discovery is Wave 3)
 - Supplicant role only (Authenticator PAE out of scope)
-- MKA suspension and group CAK not yet implemented
-- PACP Logon Process interface not yet wired in eapol_supp_sm.c
+- Group CAK not yet implemented (Wave 2)
+- MKA suspension/resume implemented but not yet wired to Logon Process bridge
 
 ---
 

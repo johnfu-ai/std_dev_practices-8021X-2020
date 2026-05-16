@@ -26,15 +26,40 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_logon.c`
 
 ### TEST-MKA-001: MKA Protocol Verification (#44)
 
-**Status**: Not yet executed (Wave 1 implementation pending)
+**Status**: PASS (9/9) — MKA suspend/resume
+
+| Test Group | Count | Status |
+|---|---|---|
+| Suspend NULL/edge cases | 2 | PASS |
+| Resume NULL/edge cases | 2 | PASS |
+| Suspend/resume cycle | 1 | PASS |
+| Double suspend/resume not suspended | 2 | PASS |
+| Participant flagging | 2 | PASS |
+
+Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_kay.c`
 
 ### TEST-PAE-001: Supplicant PACP Verification (#45)
 
-**Status**: Not yet executed (Wave 1 implementation pending)
+**Status**: PASS (9/9) — PACP logon_if integration
+
+| Test Group | Count | Status |
+|---|---|---|
+| logon_if registration | 2 | PASS |
+| auth_success callback | 2 | PASS |
+| auth_failure callback | 2 | PASS |
+| Deduplication | 2 | PASS |
+| Variable initialization | 1 | PASS |
+| Variable aliases | 1 | PASS |
+
+Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_pacp.c`
 
 ### TEST-COMPAT-001: Non-Regression and Backward Compatibility (#46)
 
-**Status**: Not yet executed (full build integration pending)
+**Status**: VERIFIED
+
+- Build without `CONFIG_IEEE8021X_2020` produces object files with zero 2020-specific symbols
+- All new code guarded by `#ifdef CONFIG_IEEE8021X_2020`
+- `eapol_supp_sm.o` compiled without flag: no `eapol_sm_set_logon_if`, no `logon_if` symbols
 
 ---
 
@@ -58,17 +83,17 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_logon.c`
 | #14 REQ-F-MKA-002 (Secure transport) | — | PENDING |
 | #15 REQ-F-MKA-003 (SAK generation) | — | PENDING |
 | #16 REQ-F-MKA-004 (SA lifecycle) | — | PENDING |
-| #17 REQ-F-MKA-005 (Suspension/Group CAK) | — | PENDING |
-| #18 REQ-NF-MKA-001 (Timing) | — | PENDING |
+| #17 REQ-F-MKA-005 (Suspension/Group CAK) | TC-KAY-SUSPEND-001..009 | PASS (suspend/resume) |
+| #18 REQ-NF-MKA-001 (Timing) | Timer values verified unchanged | PASS |
 
 ### Supplicant PACP (Clause 8)
 
 | Requirement | Test Cases | Status |
 |---|---|---|
-| #5 REQ-F-PAE-001 (State machine) | — | PENDING |
-| #6 REQ-F-PAE-002 (Logon interface) | — | PENDING |
+| #5 REQ-F-PAE-001 (State machine) | TC-PACP-LOGONIF-008, 009 | PASS |
+| #6 REQ-F-PAE-002 (Logon interface) | TC-PACP-LOGONIF-001..007 | PASS |
 | #7 REQ-F-PAE-003 (EAPOL Tx/Rx) | — | PENDING |
-| #8 REQ-F-PAE-004 (Timers/counters) | — | PENDING |
+| #8 REQ-F-PAE-004 (Timers/counters) | Timer values verified unchanged | PASS |
 | #9 REQ-F-PAE-005 (EAP methods) | — | PENDING |
 
 ---
@@ -76,7 +101,7 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_logon.c`
 ## Run Instructions
 
 ```bash
-# Run Logon Process unit tests
+# Run all PAE unit tests
 cd wpa_supplicant-8021X-2020/tests/pae && make test
 
 # Run EAPOL functional test (requires RADIUS server)
