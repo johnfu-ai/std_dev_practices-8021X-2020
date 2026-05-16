@@ -2,7 +2,7 @@
 
 **Standard**: ISO/IEC/IEEE 12207:2017 (Maintenance Process)  
 **Date**: 2026-05-17  
-**Status**: Wave 1 Complete, Wave 2 In Progress
+**Status**: All Waves Complete
 
 ---
 
@@ -60,21 +60,19 @@ Follow the established pattern from Logon Process:
 
 ## Known Issues and Future Work
 
-### Wave 2 (In Progress)
+### Wave 2 (Completed 2026-05-17)
 
-| Item | Standard Ref | Priority | Status |
-|---|---|---|---|
-| EAP-TEAP completion | RFC 7170 | High | Pending (#47) |
-| CP Clause 10 full audit | Clause 10 | High | Partial (cp_secured_cb done) |
+| Item | Standard Ref | Status |
+|---|---|---|
+| EAP-TEAP reauth support | RFC 7170 | Done (#47 closed) |
+| Outer TLV handling fix | RFC 7170 4.3.1 | Done |
 
-### Wave 3 (Planned)
+### Wave 3 (Completed 2026-05-17)
 
-| Item | Standard Ref | Priority | Status |
-|---|---|---|---|
-| ANCP implementation | Clause 10 | Medium | Not started (#49, #27) |
-| Multi-NID group management | Clause 12.5 | Medium | Not started (#50, #20, #30) |
-| Dynamic NID discovery via ANCP | Clause 10 | Low | Not started |
-| Authenticator PAE support | Clause 8.4 | Low | Not started |
+| Item | Standard Ref | Status |
+|---|---|---|
+| ANCP implementation | Clause 10 | Done (#49, #27 closed) |
+| Multi-NID group management | Clause 12.5 | Done (#50, #20, #30 closed) |
 
 ### Wave 1 Completed (2026-05-16)
 

@@ -2,7 +2,7 @@
 
 **Standard**: ISO/IEC/IEEE 12207:2017 (Transition Process)  
 **Date**: 2026-05-17  
-**Status**: Wave 1 Complete, Wave 2 In Progress
+**Status**: All Waves Complete
 
 ---
 
@@ -94,6 +94,18 @@ Wave 1 supports a single static NID configured at startup. Dynamic NID discovery
 - PACP logon_if integration (Clause 8) — auth callbacks with deduplication, 9 tests
 - CP SECURED → Logon Process notification (Clause 10), 8 tests
 - wpas_logon bridge wired into wpa_supplicant lifecycle
+
+### Completed in Wave 2
+
+- EAP-TEAP reauth support enabled (RFC 7170) — fixed Outer TLV handling per Section 4.3.1
+- All TODOs in eap_teap.c cleared
+
+### Completed in Wave 3
+
+- NID management per Clause 12.5.3 — 20 tests
+- ANCP (EAPOL-Announcement) per Clause 10/11.12 — 17 tests
+
+### Total: 90 unit tests
 
 ---
 
