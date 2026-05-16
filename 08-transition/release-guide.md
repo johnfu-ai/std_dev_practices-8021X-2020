@@ -1,8 +1,8 @@
 # Phase 08: Transition — IEEE 802.1X-2020 Release
 
 **Standard**: ISO/IEC/IEEE 12207:2017 (Transition Process)  
-**Date**: 2026-05-16  
-**Status**: In Progress
+**Date**: 2026-05-17  
+**Status**: Wave 1 Complete, Wave 2 In Progress
 
 ---
 
@@ -83,8 +83,17 @@ Wave 1 supports a single static NID configured at startup. Dynamic NID discovery
 - Single NID only (multi-NID group management is Wave 3)
 - Static NID configuration only (ANCP dynamic discovery is Wave 3)
 - Supplicant role only (Authenticator PAE out of scope)
-- Group CAK not yet implemented (Wave 2)
-- MKA suspension/resume implemented but not yet wired to Logon Process bridge
+- EAP-TEAP completion pending (Wave 2, issue #47)
+- Full build link fails on libnl-genl-3 system dependency (compilation succeeds, object files verified)
+
+### Completed in Wave 1
+
+- Logon Process state machine (Clause 12) — 24 tests
+- MKA suspend/resume (Clause 9) — wired to participant timer, 12 tests
+- Group CAK support (Clause 9.3.3) — via ieee802_1x_kay_create_mka_2020()
+- PACP logon_if integration (Clause 8) — auth callbacks with deduplication, 9 tests
+- CP SECURED → Logon Process notification (Clause 10), 8 tests
+- wpas_logon bridge wired into wpa_supplicant lifecycle
 
 ---
 

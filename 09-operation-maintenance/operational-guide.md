@@ -1,8 +1,8 @@
 # Phase 09: Operation & Maintenance — IEEE 802.1X-2020
 
 **Standard**: ISO/IEC/IEEE 12207:2017 (Maintenance Process)  
-**Date**: 2026-05-16  
-**Status**: In Progress
+**Date**: 2026-05-17  
+**Status**: Wave 1 Complete, Wave 2 In Progress
 
 ---
 
@@ -60,23 +60,31 @@ Follow the established pattern from Logon Process:
 
 ## Known Issues and Future Work
 
-### Wave 2 (Next)
+### Wave 2 (In Progress)
 
-| Item | Standard Ref | Priority |
+| Item | Standard Ref | Priority | Status |
+|---|---|---|---|
+| EAP-TEAP completion | RFC 7170 | High | Pending (#47) |
+| CP Clause 10 full audit | Clause 10 | High | Partial (cp_secured_cb done) |
+
+### Wave 3 (Planned)
+
+| Item | Standard Ref | Priority | Status |
+|---|---|---|---|
+| ANCP implementation | Clause 10 | Medium | Not started (#49, #27) |
+| Multi-NID group management | Clause 12.5 | Medium | Not started (#50, #20, #30) |
+| Dynamic NID discovery via ANCP | Clause 10 | Low | Not started |
+| Authenticator PAE support | Clause 8.4 | Low | Not started |
+
+### Wave 1 Completed (2026-05-16)
+
+| Item | Standard Ref | Tests |
 |---|---|---|
-| EAP-TEAP completion | RFC 7170 | High |
-| CP Clause 10 full audit | Clause 10 | High |
-| MKA suspension implementation | Clause 9.18 | High |
-| Group CAK support | Clause 9.3.3 | Medium |
-
-### Wave 3 (Later)
-
-| Item | Standard Ref | Priority |
-|---|---|---|
-| ANCP implementation | Clause 10 | Medium |
-| Multi-NID group management | Clause 12.5 | Medium |
-| Dynamic NID discovery via ANCP | Clause 10 | Low |
-| Authenticator PAE support | Clause 8.4 | Low |
+| Logon Process SM | Clause 12 | 24 |
+| MKA suspend/resume | Clause 9 | 12 |
+| Group CAK support | Clause 9.3.3 | (in MKA suite) |
+| PACP logon_if | Clause 8 | 9 |
+| CP SECURED notification | Clause 10 | 8 |
 
 ### Defect Tracking
 
