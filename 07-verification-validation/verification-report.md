@@ -1,7 +1,7 @@
 # Phase 07: Verification & Validation — IEEE 802.1X-2020
 
-**Standard**: IEEE 1012-2016  
-**Date**: 2026-05-16  
+**Standard**: IEEE 1012-2016
+**Date**: 2026-05-16
 **Status**: In Progress
 
 ---
@@ -26,7 +26,7 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_logon.c`
 
 ### TEST-MKA-001: MKA Protocol Verification (#44)
 
-**Status**: PASS (9/9) — MKA suspend/resume
+**Status**: PASS (12/12) — MKA suspend/resume + Group CAK
 
 | Test Group | Count | Status |
 |---|---|---|
@@ -35,6 +35,7 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_logon.c`
 | Suspend/resume cycle | 1 | PASS |
 | Double suspend/resume not suspended | 2 | PASS |
 | Participant flagging | 2 | PASS |
+| Group CAK initial/set/not-set | 3 | PASS |
 
 Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_kay.c`
 
@@ -53,6 +54,20 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_kay.c`
 
 Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_pacp.c`
 
+### TEST-CP-001: Controlled Port Audit (#44)
+
+**Status**: PASS (8/8) — CP Clause 10 audit
+
+| Test Group | Count | Status |
+|---|---|---|
+| Init sequence | 1 | PASS |
+| Connect transitions | 3 | PASS |
+| PENDING state (2020) | 1 | PASS |
+| Server change / new SAK | 2 | PASS |
+| Port disable | 1 | PASS |
+
+Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_cp.c`
+
 ### TEST-COMPAT-001: Non-Regression and Backward Compatibility (#46)
 
 **Status**: VERIFIED
@@ -60,6 +75,19 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_pacp.c`
 - Build without `CONFIG_IEEE8021X_2020` produces object files with zero 2020-specific symbols
 - All new code guarded by `#ifdef CONFIG_IEEE8021X_2020`
 - `eapol_supp_sm.o` compiled without flag: no `eapol_sm_set_logon_if`, no `logon_if` symbols
+- `ieee802_1x_kay.o` compiled without flag: no `ieee802_1x_kay_suspend/resume` symbols
+
+---
+
+## Overall Test Summary
+
+| Suite | Tests | Status |
+|---|---|---|
+| Logon Process | 24 | PASS |
+| MKA Suspend/Resume + Group CAK | 12 | PASS |
+| PACP logon_if | 9 | PASS |
+| CP Clause 10 Audit | 8 | PASS |
+| **Total** | **53** | **PASS** |
 
 ---
 
@@ -81,9 +109,9 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_pacp.c`
 |---|---|---|
 | #13 REQ-F-MKA-001 (Key hierarchy) | — | PENDING |
 | #14 REQ-F-MKA-002 (Secure transport) | — | PENDING |
-| #15 REQ-F-MKA-003 (SAK generation) | — | PENDING |
+| #15 REQ-F-MKA-003 (SAK generation) | TC-KAY-GCAK-001..003 | PASS (Group CAK) |
 | #16 REQ-F-MKA-004 (SA lifecycle) | — | PENDING |
-| #17 REQ-F-MKA-005 (Suspension/Group CAK) | TC-KAY-SUSPEND-001..009 | PASS (suspend/resume) |
+| #17 REQ-F-MKA-005 (Suspension/Group CAK) | TC-KAY-SUSPEND-001..009 | PASS |
 | #18 REQ-NF-MKA-001 (Timing) | Timer values verified unchanged | PASS |
 
 ### Supplicant PACP (Clause 8)
@@ -95,6 +123,14 @@ Test location: `wpa_supplicant-8021X-2020/tests/pae/test_ieee802_1x_pacp.c`
 | #7 REQ-F-PAE-003 (EAPOL Tx/Rx) | — | PENDING |
 | #8 REQ-F-PAE-004 (Timers/counters) | Timer values verified unchanged | PASS |
 | #9 REQ-F-PAE-005 (EAP methods) | — | PENDING |
+
+### Controlled Port (Clause 10)
+
+| Requirement | Test Cases | Status |
+|---|---|---|
+| CP state transitions | TC-CP-001..008 | PASS |
+| CP PENDING state (2020) | TC-CP-005 | PASS |
+| CP server change/new SAK | TC-CP-006, 007 | PASS |
 
 ---
 
