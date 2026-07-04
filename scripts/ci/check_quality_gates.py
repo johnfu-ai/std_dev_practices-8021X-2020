@@ -30,6 +30,20 @@ def main():
     data = json.loads(cov_path.read_text(encoding='utf-8'))
     gates = yaml.safe_load(gates_path.read_text(encoding='utf-8'))
 
+    # Documentation/tooling-only repositories have no instrumentable C/C++ source.
+    # gcovr --json-summary emits line_total=0 and files=[] in that case, so the
+    # coverage gate is not applicable. (This repo's buildable code lives in
+    # ../wpa_supplicant-8021X-2020; the root CMakeLists.txt declares LANGUAGES NONE.)
+    line_total = data.get('line_total', data.get('lines_total'))
+    files_field = data.get('files')
+    file_count = len(files_field) if isinstance(files_field, list) else files_field
+    if (isinstance(line_total, (int, float)) and line_total == 0) or \
+       (isinstance(file_count, (int, float)) and file_count == 0):
+        print("No instrumented source code in this repository (line_total=0, files=0).")
+        print("Coverage gate N/A for a documentation/tooling repository.")
+        print("Coverage gate PASSED (N/A)")
+        sys.exit(0)
+
     # Try multiple gcovr JSON shapes to extract total line coverage.
     # Preferred: gcovr --json-summary with 'line_coverage' as fraction (0..1).
     covered = None  # percent (0..100)

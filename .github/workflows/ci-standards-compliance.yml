@@ -659,6 +659,9 @@ jobs:
     name: Generate Standards Compliance Report
     runs-on: ubuntu-latest
     if: always()
+    permissions:
+      contents: read
+      pull-requests: write  # Comment PR with the compliance report
 
     steps:
       - name: Checkout code

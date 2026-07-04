@@ -82,13 +82,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure (MSVC Release)
+      - name: Set up MSVC developer environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure (Ninja, MSVC)
         shell: pwsh
-        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -G Ninja -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         shell: pwsh
-        run: cmake --build build --config Release -- /m
+        run: cmake --build build --config Release --parallel
 
       - name: Run tests
         shell: pwsh
