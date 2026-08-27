@@ -1,13 +1,13 @@
 # Phase 05: Test Results — IEEE 802.1X-2020
 
 **Test Framework**: Custom C unit test macros (TEST/RUN/ASSERT_*)
-**Location**: `wpa_supplicant-8021X-2020/tests/pae/`
+**Location**: `wpa_supplicant/tests/pae/` (fork repo)
 **Run Command**: `cd tests/pae && make test`
-**Date**: 2026-05-16
+**Date**: 2026-08-27 (re-verified after the upstream 2.12 rebase, ADR-BASE-001; first published 2026-05-16)
 
 ---
 
-## Summary: 53/53 PASS
+## Summary: 90/90 PASS
 
 | Suite | Tests | Status | File |
 |---|---|---|---|
@@ -15,6 +15,10 @@
 | MKA Suspend/Resume + Group CAK | 12 | PASS | test_ieee802_1x_kay.c |
 | PACP logon_if | 9 | PASS | test_ieee802_1x_pacp.c |
 | CP Clause 10 Audit | 8 | PASS | test_ieee802_1x_cp.c |
+| NID Management (Clause 12.5) | 20 | PASS | test_ieee802_1x_nid.c |
+| ANCP (Clause 10/11.12) | 17 | PASS | test_ieee802_1x_ancp.c |
+
+All 6 suites pass identically before and after the 2.11 -> 2.12 rebase.
 
 ---
 
@@ -60,6 +64,29 @@
 | PENDING state (2020) | 1 | PASS |
 | Server change / new SAK | 2 | PASS |
 | Port disable | 1 | PASS |
+
+---
+
+## TEST-NID-001: NID Management (20 tests)
+
+| Test Group | Count | Status |
+|---|---|---|
+| nid add / NULL guards | 3 | PASS |
+| nid lookup (hit / miss / NULL) | 3 | PASS |
+| nid remove (existing / missing / NULL) | 3 | PASS |
+| NID policy (use_eap, guest unauth immediate) | 2 | PASS |
+| set_current / get_current edge cases | 3 | PASS |
+| Multiple entries / count / duplicate / shift | 6 | PASS |
+
+## TEST-ANCP-001: ANCP (17 tests)
+
+| Test Group | Count | Status |
+|---|---|---|
+| parse NULL/empty guards | 4 | PASS |
+| NID-Set TLV parsing (single/multiple/truncated) | 3 | PASS |
+| validate (valid/NULL/empty/truncated) | 4 | PASS |
+| nid_count / get_nid (valid, range, NULL) | 5 | PASS |
+| cipher suite TLV | 1 | PASS |
 
 ---
 
