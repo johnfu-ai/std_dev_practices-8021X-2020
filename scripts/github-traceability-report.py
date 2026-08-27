@@ -113,6 +113,20 @@ def fetch_all_requirements() -> List[Dict]:
     
     return issues
 
+def _extract_label_links(issue_body: str, label_regex: str) -> List[int]:
+    """Extract all issue numbers referenced after a traceability label.
+
+    Handles markdown-bold labels (``**Traces to**:``), plain labels
+    (``Implements:``), an optional colon, and both ``#123`` and ``(#123)``
+    reference forms. Captures every ``#N`` on the same line as the label.
+    """
+    results: List[int] = []
+    pat = re.compile(r'\*{0,2}(?:' + label_regex + r')\*{0,2}:?\s*([^\n]*)', re.IGNORECASE)
+    for m in pat.finditer(issue_body):
+        results.extend(int(n) for n in re.findall(r'#(\d+)', m.group(1)))
+    return results
+
+
 def extract_links(issue_body: str) -> Dict[str, List[int]]:
     """Parse issue body for traceability links.
     
@@ -132,25 +146,28 @@ def extract_links(issue_body: str) -> Dict[str, List[int]]:
     if not issue_body:
         return {
             'traces_to': [],
+            'satisfies': [],
             'depends_on': [],
             'verified_by': [],
             'implemented_by': [],
             'refined_by': []
         }
     
-    # Extract different link types
-    traces_to = re.findall(r'[Tt]races?\s+to:?\s*#(\d+)', issue_body)
-    depends_on = re.findall(r'[Dd]epends?\s+on:?\s*#(\d+)', issue_body)
-    verified_by = re.findall(r'[Vv]erified\s+by:?\s*#(\d+)', issue_body)
-    implemented_by = re.findall(r'[Ii]mplemented\s+by:?\s*#(\d+)', issue_body)
-    refined_by = re.findall(r'[Rr]efined\s+by:?\s*#(\d+)', issue_body)
+    # Extract different link types (handles **bold** labels and (#N) forms)
+    traces_to = _extract_label_links(issue_body, r'Traces?\s+to')
+    satisfies = _extract_label_links(issue_body, r'Satisf(?:ies|ied\s+by)')
+    depends_on = _extract_label_links(issue_body, r'Depends?\s+on')
+    verified_by = _extract_label_links(issue_body, r'Verified\s+by|Verifies')
+    implemented_by = _extract_label_links(issue_body, r'Implemented\s+by|Implements')
+    refined_by = _extract_label_links(issue_body, r'Refined\s+by')
     
     return {
-        'traces_to': [int(n) for n in traces_to],
-        'depends_on': [int(n) for n in depends_on],
-        'verified_by': [int(n) for n in verified_by],
-        'implemented_by': [int(n) for n in implemented_by],
-        'refined_by': [int(n) for n in refined_by]
+        'traces_to': traces_to,
+        'satisfies': satisfies,
+        'depends_on': depends_on,
+        'verified_by': verified_by,
+        'implemented_by': implemented_by,
+        'refined_by': refined_by
     }
 
 def get_requirement_type(title: str, labels: List[str]) -> str:
@@ -168,7 +185,7 @@ def get_requirement_type(title: str, labels: List[str]) -> str:
     """
     # Extract type from title prefix (primary method)
     import re
-    match = re.match(r'^(StR|REQ-F|REQ-NF|ADR|ARC-C|QA-SC|TEST|TEST-PLAN|DES-[A-Z])', title)
+    match = re.match(r'^\s*\[?(StR|REQ-F|REQ-NF|ADR|ARC-C|QA-SC|TEST|TEST-PLAN|DES-[A-Z])', title)
     if match:
         prefix = match.group(1)
         # Normalize design prefixes
@@ -182,6 +199,8 @@ def get_requirement_type(title: str, labels: List[str]) -> str:
         'type:stakeholder-requirement': 'StR',
         'type:requirement:functional': 'REQ-F',
         'type:requirement:non-functional': 'REQ-NF',
+        'type:functional-requirement': 'REQ-F',
+        'type:non-functional-requirement': 'REQ-NF',
         'type:architecture:decision': 'ADR',
         'type:architecture:component': 'ARC-C',
         'type:architecture:quality-scenario': 'QA-SC',
@@ -210,7 +229,14 @@ def generate_matrix():
     
     print("## Summary\n")
     issues = fetch_all_requirements()
-    print(f"Total requirements: **{len(issues)}**\n")
+    # "Requirements" for traceability coverage = functional + non-functional
+    # requirements (REQ-F, REQ-NF). StR are top-level roots; ADR/ARC-C/QA-SC/
+    # TEST are artifacts traced separately and are not counted as requirements.
+    req_issues = [
+        i for i in issues
+        if get_requirement_type(i['title'], [l['name'] for l in i['labels']]) in ('REQ-F', 'REQ-NF')
+    ]
+    print(f"Total requirements: **{len(req_issues)}**\n")
     
     # Count by type
     type_counts = defaultdict(int)
@@ -254,7 +280,7 @@ def generate_matrix():
         print(f"| #{issue['number']} | {req_type} | {title} | {state_badge} | {traces_to} | {depends_on} | {verified_by} | {implemented_by} |")
     
     print("\n## Orphaned Requirements\n")
-    print("Requirements without parent links (excluding StR which are top-level):\n")
+    print("Functional/non-functional requirements without any traceability link:\n")
     
     orphans = []
     for issue in issues:
@@ -262,12 +288,16 @@ def generate_matrix():
         req_type = get_requirement_type(issue['title'], labels)
         links = extract_links(issue.get('body', ''))
         
-        # StR issues should not have parent links
-        if req_type == 'StR':
+        # Only actual requirements (REQ-F/REQ-NF) must trace to a parent.
+        # StR are top-level roots; ADR/ARC-C/QA-SC/TEST are artifacts.
+        if req_type not in ('REQ-F', 'REQ-NF'):
             continue
         
-        # All other types should trace to parent
-        if not links['traces_to']:
+        # An orphan has no recognized link of any kind (Traces to, Satisfies,
+        # Implements, Verified by, Depends on, Refined by).
+        has_link = any(links[k] for k in ('traces_to', 'satisfies', 'implemented_by',
+                                          'verified_by', 'depends_on', 'refined_by'))
+        if not has_link:
             orphans.append((issue['number'], req_type, issue['title']))
     
     if orphans:

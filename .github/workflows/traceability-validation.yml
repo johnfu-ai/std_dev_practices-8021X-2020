@@ -57,8 +57,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-      
+
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
@@ -88,12 +87,13 @@ jobs:
           TOTAL_REQS=$(grep "Total requirements:" "$REPORT_FILE" | grep -oP '\*\*\K[0-9]+(?=\*\*)' || echo "0")
           echo "total_requirements=$TOTAL_REQS" >> $GITHUB_OUTPUT
           
-          # Count orphaned requirements
-          ORPHANS=$(grep -A 100 "## Orphaned Requirements" "$REPORT_FILE" | grep "^| #" | wc -l || echo "0")
+          # Count orphaned requirements (scoped to the section to avoid bleeding
+          # into the following "Requirements Without Tests" table)
+          ORPHANS=$(awk '/^## Orphaned Requirements/{f=1;next} /^## /{f=0} f && /^\| #/' "$REPORT_FILE" | wc -l || echo "0")
           echo "orphaned_requirements=$ORPHANS" >> $GITHUB_OUTPUT
-          
-          # Count unverified requirements
-          UNVERIFIED=$(grep -A 100 "## Requirements Without Tests" "$REPORT_FILE" | grep "^| #" | wc -l || echo "0")
+
+          # Count unverified requirements (scoped to the section)
+          UNVERIFIED=$(awk '/^## Requirements Without Tests/{f=1;next} /^## /{f=0} f && /^\| #/' "$REPORT_FILE" | wc -l || echo "0")
           echo "unverified_requirements=$UNVERIFIED" >> $GITHUB_OUTPUT
           
           # Calculate traceability coverage percentage
