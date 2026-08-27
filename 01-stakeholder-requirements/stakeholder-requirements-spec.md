@@ -169,7 +169,11 @@ EAP-TEAP is positioned as the successor to EAP-PEAP and EAP-TTLS, providing impr
 2. Inner methods (EAP-MSCHAPv2, EAP-TLS) functional within TEAP tunnel
 3. Session key derivation (IMSK, EMSK) correct per RFC 7170
 4. Channel binding and compound MAC verification implemented
-5. PAC (Protected Access Credential) provisioning supported
+5. ~~PAC (Protected Access Credential) provisioning supported~~
+   **Revised 2026-08-27 (ADR-BASE-001, #63)**: PAC provisioning is no longer
+   required — RFC 7170bis deprecates it and upstream wpa_supplicant 2.12
+   removed the PAC code paths; this project follows upstream. Certificate /
+   identity-based TLS provisioning remains covered by criteria 1–4.
 
 **Priority**: P1 (High)  
 **Integrity Level**: 3

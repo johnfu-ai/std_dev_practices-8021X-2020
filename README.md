@@ -77,12 +77,20 @@ It does **not** contain C implementation code.
 
 ## Project Scope
 
-Extend **wpa_supplicant 2.11** — the widely deployed open-source IEEE 802.1X
+Extend **wpa_supplicant** — the widely deployed open-source IEEE 802.1X
 supplicant implementation — to support features introduced or updated in
 **IEEE Std 802.1X-2020** (revision of 802.1X-2010, incorporating 802.1Xbx-2014
 and 802.1Xck-2018).
 
-### Key 802.1X-2020 Gaps vs. wpa_supplicant 2.11
+**Implementation base**: upstream `wpa_supplicant` — originally 2.11, rebased
+to **2.12** on 2026-08-27 (see ADR-BASE-001).
+
+### Key 802.1X-2020 Gaps vs. wpa_supplicant upstream baseline
+
+> Status below reflects the **starting-point analysis against 2.11**. Logon
+> Process, NID Group management, ANCP, MKA 2020 extensions, and EAP-TEAP
+> reauth have since been implemented in this project (see Phase 05/07
+> evidence).
 
 | Feature | Standard Reference | Status |
 |---|---|---|
@@ -144,7 +152,7 @@ This project applies 7-pillar methodology:
 | **Test-Driven Development** | Red → Green → Refactor; no code without a failing test |
 | **Domain-Driven Design** | Ubiquitous language (IEEE 802.1X-2020 terminology), bounded context |
 | **Real-Time Systems** | Measurable temporal constraints; MKA timers per standard |
-| **Reverse Engineering** | Systematic gap analysis of wpa_supplicant-2.11 vs. 802.1X-2020 |
+| **Reverse Engineering** | Systematic gap analysis of the wpa_supplicant baseline vs. 802.1X-2020 |
 | **Object-Oriented Design (in C)** | Dependency injection, single responsibility, no global state |
 
 ### Traceability Chain

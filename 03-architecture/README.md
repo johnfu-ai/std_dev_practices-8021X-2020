@@ -36,7 +36,8 @@ Define system architecture including viewpoints, concerns, architectural decisio
 │   ├── ADR-PAE-001.md          # PACP Update (#34)
 │   ├── ADR-PAE-002.md          # DI Pattern (#35)
 │   ├── ADR-MKA-001.md          # MKA Update (#36)
-│   └── ADR-LOGON-001.md        # Logon Process (#37)
+│   ├── ADR-LOGON-001.md        # Logon Process (#37)
+│   └── ADR-BASE-001.md         # Upstream 2.12 Rebase (#63)
 ├── components/                  # Component specifications (ARC-C)
 ├── views/                       # Architecture views and diagrams
 └── constraints/                 # Technical constraints

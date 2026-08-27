@@ -363,7 +363,7 @@ The PACP changes add a small number of boolean checks in the state machine step 
 
 All additions are guarded by `#ifdef CONFIG_IEEE8021X_2020`. When the flag is not defined, the `eapol_sm` struct and all functions are byte-identical to the 2010 baseline. The variable aliases are also guarded, so they do not affect compilation when the flag is off.
 
-Verification: a non-regression build with `CONFIG_IEEE8021X_2020` undefined must produce the same object file as the baseline wpa_supplicant 2.11.
+Verification: a non-regression build with `CONFIG_IEEE8021X_2020` undefined must produce the same object file as the upstream baseline (wpa_supplicant 2.12 since the 2026-08-27 rebase).
 
 ## 12. Design Rationale
 

@@ -215,7 +215,7 @@ Apply via C patterns:
 
 Apply the reverse engineering guide (`docs/reverse-engineering-guide.md`) to:
 1. Map existing state machines to IEEE 802.1X-2020 clauses
-2. Identify gaps between wpa_supplicant-2.11 and IEEE 802.1X-2020
+2. Identify gaps between the wpa_supplicant baseline (2.12; the original gap analysis targeted 2.11) and IEEE 802.1X-2020
 3. Document findings as GitHub Issues before changing code
 
 ---
@@ -358,7 +358,7 @@ Sync `.github/` from `ai/` via: `python3 scripts/sync-ai-adapters.py`
 
 ## Key 802.1X-2020 Compliance Gaps (Starting Point)
 
-Based on baseline analysis of wpa_supplicant-2.11 vs IEEE 802.1X-2020:
+Based on the starting-point baseline analysis of wpa_supplicant-2.11 vs IEEE 802.1X-2020 (fork base since rebased to upstream 2.12, 2026-08-27):
 
 | Area | Current State | 802.1X-2020 Requirement | Priority |
 |---|---|---|---|

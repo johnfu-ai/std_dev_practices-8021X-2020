@@ -18,7 +18,7 @@ This methodology repository is the **lifecycle documentation and traceability hu
 - **All C code lives in**: `wpa_supplicant-8021X-2020/` (separate repo/workspace folder)
 - **Build system**: wpa_supplicant Makefile — NOT CMake
 - **Language**: C only (C11, no C++)
-- **Mode**: Extend wpa_supplicant 2.11 — do NOT create a new upper-layer library
+- **Mode**: Extend wpa_supplicant (upstream base 2.12) — do NOT create a new upper-layer library
 - **This repo's role**: Phase documentation (01-09), GitHub Issues tracking, agent prompts, spec templates
 
 ### What Agents Must NOT Do
