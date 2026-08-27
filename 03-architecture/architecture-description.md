@@ -34,6 +34,7 @@ Wave 1 (P0) architecture decisions covering:
 - ADR-PAE-002: #35 — DI Pattern
 - ADR-MKA-001: #36 — MKA Update Strategy
 - ADR-LOGON-001: #37 — Logon Process Placement
+- ADR-BASE-001: #63 — Upstream 2.12 Rebase
 
 ---
 
@@ -59,6 +60,7 @@ Wave 1 (P0) architecture decisions covering:
 | ADR-PAE-002 | Function-pointer DI for all inter-SM interfaces | Accepted | #35 |
 | ADR-MKA-001 | Incremental KaY update, no SecY interface changes | Accepted | #36 |
 | ADR-LOGON-001 | Logon Process as new SM in `src/pae/ieee802_1x_logon.c` | Accepted | #37 |
+| ADR-BASE-001 | Rebase baseline to upstream wpa_supplicant 2.12; TEAP PAC removed per RFC 7170bis | Accepted | #63 |
 
 ---
 
