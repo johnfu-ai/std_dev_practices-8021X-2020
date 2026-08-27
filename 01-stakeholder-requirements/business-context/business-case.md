@@ -10,7 +10,7 @@
 
 ## 1. Business Problem
 
-wpa_supplicant 2.11 implements IEEE 802.1X based on the 2010 revision of the standard. IEEE 802.1X-2020 (approved 30 January 2020) is the current revision, incorporating amendments 802.1Xbx-2014 and 802.1Xck-2018. Key protocol areas introduced or significantly updated in the 2020 revision are **not implemented** in wpa_supplicant, creating a conformance gap that affects:
+wpa_supplicant implements IEEE 802.1X based on the 2010 revision of the standard (true of upstream 2.11 and 2.12 alike; the fork base was rebased from 2.11 to 2.12 on 2026-08-27). IEEE 802.1X-2020 (approved 30 January 2020) is the current revision, incorporating amendments 802.1Xbx-2014 and 802.1Xck-2018. Key protocol areas introduced or significantly updated in the 2020 revision are **not implemented** in wpa_supplicant, creating a conformance gap that affects:
 
 - **Product certification**: Vendors cannot claim 802.1X-2020 conformance (Clause 5, Annex A PICS)
 - **Enterprise deployment**: Modern network access control features (NID-based logon, ANCP) unavailable
@@ -78,7 +78,7 @@ EAP-TEAP, updated cryptographic key hierarchy, and improved session management r
 |------------|-------------|
 | Language | C only (C11); no C++ |
 | Build system | wpa_supplicant Makefile — no new build systems |
-| Architecture | Extend wpa_supplicant 2.11 — not a new library or wrapper |
+| Architecture | Extend wpa_supplicant (upstream base 2.12) — not a new library or wrapper |
 | Dependencies | No new external library dependencies |
 | Copyright | No reproduction of IEEE standard text in code or documentation |
 | Upstream alignment | Patches should be structured for potential hostap.git upstream submission |

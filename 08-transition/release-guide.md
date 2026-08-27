@@ -49,7 +49,7 @@ CONFIG_IEEE8021X_2020              (master switch, implies MACSEC + EAPOL)
 └── CONFIG_IEEE8021X_2020_ANCP     (Clause 10 — Announcements, Wave 3)
 ```
 
-Per ADR-COMPAT-001 (#33): all 802.1X-2020 code is compile-time gated. Disabling the flags yields identical behavior to baseline wpa_supplicant 2.11.
+Per ADR-COMPAT-001 (#33): all 802.1X-2020 code is compile-time gated. Disabling the flags yields identical behavior to the upstream baseline (wpa_supplicant 2.12 since the 2026-08-27 rebase; 2.11 before).
 
 ---
 
@@ -117,4 +117,4 @@ If issues arise, disable 802.1X-2020 features by commenting out the flags in `.c
 # CONFIG_IEEE8021X_2020_LOGON is not set
 ```
 
-Rebuild. The resulting binary is functionally identical to baseline wpa_supplicant 2.11.
+Rebuild. The resulting binary is functionally identical to the upstream baseline (wpa_supplicant 2.12 since the 2026-08-27 rebase).
